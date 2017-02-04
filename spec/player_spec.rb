@@ -4,8 +4,10 @@ describe Player do
   subject(:player) { Player.new("Yuriy Gagarin") }
 
   describe "#initialize" do
-    it "creates a new player with a publicly visible name attribute" do
+    it "assigns the name" do
       expect(player.name).to eq("Yuriy Gagarin")
     end
+
+    it "starts with an empty hand"
   end
 end

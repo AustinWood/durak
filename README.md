@@ -17,8 +17,6 @@ Ace is the highest rank and six is the lowest. Trumps always beat non-trump card
 RUN SPECS IN THIS ORDER
 Card
 Deck
+Hand
 Player
 Game
---
-WHERE TO PUT THESE? :
-Hand
