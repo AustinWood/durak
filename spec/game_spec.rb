@@ -1,4 +1,5 @@
 require 'game'
+require 'player'
 
 describe Game do
   let(:players) do
@@ -17,6 +18,4 @@ describe Game do
       expect(game.players.count).to eq(4)
     end
   end
-
-
 end

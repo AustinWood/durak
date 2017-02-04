@@ -1,6 +1,6 @@
 require 'hand'
 
-descibre Hand do
+describe Hand do
   subject(:hand) { Hand.new }
   
 end
