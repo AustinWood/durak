@@ -12,7 +12,7 @@ class Deck
     end
     cards
   end
-  
+
   def initialize(cards = Deck.all_cards)
     @cards = cards
   end
