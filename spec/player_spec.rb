@@ -23,6 +23,14 @@ describe Player do
     end
   end
 
+  describe "#take" do
+    it "adds cards to a player's hand" do
+      card = Card.new(:hearts, :queen)
+      player.take([card])
+      expect(player.cards.count).to eq(1)
+    end
+  end
+
   context "while taking a turn" do
     let(:cards) do
       cards = [

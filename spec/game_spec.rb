@@ -50,7 +50,26 @@ describe Game do
   end
 
   describe "#take_turn" do
+    it "WRITE A SPEC FOR THIS!?"
+  end
 
+  describe "#attacker_wins?" do
+    it "returns true if the attacker wins by highest value"
+    it "returns true if the attacker wins by trump suit"
+    it "returns false if the defender wins by highest value"
+    it "returns false if the defender wins by trump suit"
+  end
+
+  describe "remove_cardless_players" do
+    it "removes players from the @players array when they have 0 cards remaining" do
+      player_a = Player.new("Pyotr Ilyich Tchaikovsky")
+      player_b = Player.new("Yuri Gagarin")
+      player_b.cards = [Card.new(:hearts, :queen)]
+      players = [player_a, player_b]
+      game = Game.new(players)
+      game.remove_cardless_players
+      expect(players.count).to eq(1)
+    end
   end
 
   describe "#attacker" do

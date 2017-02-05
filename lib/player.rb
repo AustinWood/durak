@@ -11,6 +11,10 @@ class Player
     6.times { @cards << deck.take_one }
   end
 
+  def take(cards)
+    @cards += cards
+  end
+
   # To simplify game logic, assume that the attacker
   # will always choose to attack with their highest value card.
   def attack
@@ -24,6 +28,7 @@ class Player
     attacking_card
   end
 
+  # TODO: Refactor all defesnse-related methods
   def defend(attacking_card, trump_card)
     defending_card = nil
     while defending_card.nil?

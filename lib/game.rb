@@ -44,11 +44,34 @@ class Game
   end
 
   def loser?
-    @players.count == 1
+    @players.count <= 1
   end
 
   def take_turn
+    attacking_card = attacker.attack
+    defending_card = defender.defend(attacking_card, trump_card)
+    if attacker_wins?(attacking_card, defending_card)
+      defender.take([attacking_card, defending_card])
+      @players.rotate!
+    end
+    @players.rotate!
+    remove_cardless_players
+  end
 
+  def attacker_wins?(attacking_card, defending_card)
+    if attacking_card.suit == trump_card.suit
+      return true unless defending_card.suit == trump_card.suit
+    end
+    if defending_card.suit == trump_card.suit
+      return true unless attacking_card.suit == trump_card.suit
+    end
+    defending_card.int_val < attacking_card.int_val
+  end
+
+  def remove_cardless_players
+    @players.each do |player|
+      players.delete(player) if player.cards.count.zero?
+    end
   end
 
   def attacker
