@@ -49,8 +49,8 @@ describe Deck do
     expect(deck).to_not respond_to(:cards)
   end
 
-  describe "#fill_hand" do
-    it "removes cards from deck on take" do
+  describe "#take_one" do
+    it "removes one card from the deck" do
       deck.take_one
       expect(deck.count).to eq(5)
     end

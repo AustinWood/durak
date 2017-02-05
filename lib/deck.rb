@@ -26,7 +26,6 @@ class Deck
     @cards.last.suit
   end
 
-  # Takes `n` cards from the top of the deck.
   def take_one
     raise "not enough cards" if count.zero?
     @cards.shift
