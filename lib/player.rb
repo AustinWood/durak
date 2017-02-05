@@ -31,7 +31,6 @@ class Player
     selected_card
   end
 
-  # TODO: Can only defend with same suit
   def defend(attacking_card)
     selected_card = nil
     if attacking_card.suit == trump_suit
