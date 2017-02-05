@@ -22,7 +22,11 @@ describe Player do
       expect(player.cards.count).to eq(6)
     end
 
-    it "does nothing if the deck is empty"
+    it "does nothing if the deck is empty" do
+      deck = []
+      player.fill_hand(deck)
+      expect(player.cards.count).to eq(0)
+    end
   end
 
   describe "#take" do
@@ -77,24 +81,41 @@ describe Player do
     end
 
     describe "#defend" do
-      it "chooses the lowest-value winning card from the player's hand"
+      it "chooses the lowest-value winning card from the player's hand" do
+        attacking_card = Card.new(:hearts, :eight)
+        player.remember_trump_suit(:clubs)
+        defending_card = player.defend(attacking_card)
+        expect(defending_card.value).to eq(:ten)
+      end
 
-      it "does not choose a trump card if others are available"
+      it "does not choose a trump card if others are available" do
+        attacking_card = Card.new(:hearts, :eight)
+        player.remember_trump_suit(:spades)
+        defending_card = player.defend(attacking_card)
+        expect(defending_card.value).to eq(:nine)
+      end
 
-      it "chooses a trump card if no other winning cards are available"
+      it "chooses a trump card if no other winning cards are available" do
+        player.cards = [Card.new(:clubs, :six), Card.new(:clubs, :nine)]
+        player.remember_trump_suit(:clubs)
+        attacking_card = Card.new(:hearts, :eight)
+        defending_card = player.defend(attacking_card)
+        expect(defending_card.value).to eq(:six)
+      end
 
-      it "removes the selected card from the player's cards array"
+      it "removes the selected card from the player's cards array" do
+        player.remember_trump_suit(:spades)
+        player.defend(Card.new(:clubs, :six))
+        expect(player.cards.count).to eq(5)
+      end
 
-      it "returns nil if no winning cards are available"
+      it "returns nil if no winning cards are available" do
+        player.remember_trump_suit(:spades)
+        attacking_card = Card.new(:spades, :eight)
+        defending_card = player.defend(attacking_card)
+        expect(defending_card).to eq(nil)
+      end
 
-      # it "returns the lowest-value non-trump-suit winning card if one exists in hand" do
-      #   attacking_card = Card.new(:spades, :queen)
-      #   trump_card = Card.new(:diamonds, :seven)
-      #   defending_card = player.defend(attacking_card, trump_card)
-      #   expect(defending_card.value).to eq(:king)
-      #   expect(defending_card.suit).to eq(:hearts)
-      # end
-      #
       # it "returns lowest-value trump-suit card if it wil beat the attacking card" do
       #   attacking_card = Card.new(:spades, :ace)
       #   trump_card = Card.new(:clubs, :eight)

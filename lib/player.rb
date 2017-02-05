@@ -29,12 +29,25 @@ class Player
     selected_card
   end
 
+  def defend(attacking_card)
+    selected_card = nil
+    unless attacking_card.suit == @trump_suit
+      selected_card = lowest_card(false, attacking_card.int_val)
+    end
+    if selected_card.nil?
+      min = (attacking_card.suit == @trump_suit ? attacking_card.int_val : nil)
+      selected_card = lowest_card(true, min)
+    end
+    @cards.delete(selected_card)
+    selected_card
+  end
+
   def lowest_card(is_trump, min = nil)
     chosen_card = nil
     valid_cards = (is_trump ? trump_cards : non_trump_cards)
     valid_cards.each do |card|
       next unless chosen_card.nil? || chosen_card.int_val > card.int_val
-      chosen_card = card
+      chosen_card = card if min.nil? || card.int_val > min
     end
     chosen_card
   end
