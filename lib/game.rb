@@ -2,7 +2,7 @@ require_relative 'player'
 require_relative 'deck'
 
 class Game
-  attr_reader :players
+  attr_reader :players, :deck, :turns, :trump_suit
 
   def initialize(players)
     @deck = Deck.new
@@ -13,6 +13,7 @@ class Game
   def play
     fill_hands
     set_trump_suit
+    puts "The trump suit is #{@trump_suit}"
     select_first_attacker
     take_turn until loser?
     declare_durak
@@ -25,7 +26,6 @@ class Game
   def set_trump_suit
     @trump_suit = @deck.reveal_trump_suit
     players.each { |player| player.trump_suit = @trump_suit }
-    puts "The trump suit is #{@trump_suit}"
   end
 
   # Rotate the @players array so that the Player at i = 0
