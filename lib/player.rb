@@ -1,10 +1,11 @@
 class Player
   attr_reader :name
-  attr_accessor :cards
+  attr_accessor :cards, :trump_suit
 
   def initialize(name)
     @name = name
     @cards = []
+    @trump_suit = nil
   end
 
   def fill_hand(deck)
@@ -21,31 +22,32 @@ class Player
   # choose to attack with their lowest value card not of the trump suit.
   # If the player only has cards matching the trump suit, then choose
   # from these the card with the lowest value.
-  # In real-life gameplay, this is usually the best attaking strategy.
+  # In real-life gameplay, this is usually the best attaking strategy,
+  # as you want to save your high-value cards for defense.
   def attack
-    selected_card = lowest_card(false)
-    selected_card = lowest_card(true) if selected_card.nil?
+    selected_card = lowest_card(non_trump_cards)
+    selected_card = lowest_card(trump_cards) if selected_card.nil?
     @cards.delete(selected_card)
     selected_card
   end
 
+  # TODO: Can only defend with same suit
   def defend(attacking_card)
     selected_card = nil
-    unless attacking_card.suit == @trump_suit
-      selected_card = lowest_card(false, attacking_card.int_val)
-    end
-    if selected_card.nil?
-      min = (attacking_card.suit == @trump_suit ? attacking_card.int_val : nil)
-      selected_card = lowest_card(true, min)
+    if attacking_card.suit == trump_suit
+      selected_card = lowest_card(trump_cards, attacking_card.int_val)
+    else
+      same_suit_cards = @cards.select { |card| card.suit == attacking_card.suit }
+      selected_card = lowest_card(same_suit_cards, attacking_card.int_val)
+      selected_card = lowest_card(trump_cards, nil) if selected_card.nil?
     end
     @cards.delete(selected_card)
     selected_card
   end
 
-  def lowest_card(is_trump, min = nil)
+  def lowest_card(card_subset, min = nil)
     chosen_card = nil
-    valid_cards = (is_trump ? trump_cards : non_trump_cards)
-    valid_cards.each do |card|
+    card_subset.each do |card|
       next unless chosen_card.nil? || chosen_card.int_val > card.int_val
       chosen_card = card if min.nil? || card.int_val > min
     end
@@ -60,15 +62,10 @@ class Player
     @cards.reject { |card| card.suit == @trump_suit }
   end
 
-  def remember_trump_suit(trump_suit)
-    @trump_suit = trump_suit
-  end
-
   def print_cards
-    card_str = "#{@name}'s cards: "
-    @cards.each do |card|
-      card_str << "#{card}, "
-    end
-    card_str
+    output = "#{@name}'s cards: "
+    str_arr = @cards.map { |card| card.to_s }
+    cards_str = str_arr.join(", ")
+    output.concat(cards_str)
   end
 end

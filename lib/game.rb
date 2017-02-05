@@ -24,7 +24,7 @@ class Game
 
   def set_trump_suit
     @trump_suit = @deck.reveal_trump_suit
-    players.each { |player| player.remember_trump_suit(@trump_suit) }
+    players.each { |player| player.trump_suit = @trump_suit }
     puts "The trump suit is #{@trump_suit}"
   end
 
@@ -45,33 +45,17 @@ class Game
 
   def take_turn
     @turns += 1
-    puts "----------------"
+    puts "----------------\n> Turn ##{@turns}"
     players.each { |player| puts player.print_cards }
-    puts "\n"
     attacking_card = attacker.attack
+    puts "\n#{attacker.name} attacked with #{attacking_card}"
     defending_card = defender.defend(attacking_card)
-    puts "#{attacker.name} attacked with #{attacking_card}"
-    puts "#{defender.name} defended with #{defending_card}"
-    attack_successful = attacker_wins?(attacking_card, defending_card)
-    puts (attack_successful ? "Attacker wins!" : "Defender wins!")
-    if defending_card.nil?
-      defender.take([attacking_card])
-    else
-      defender.take([attacking_card, defending_card]) if attack_successful
-    end
+    attack_successful = defending_card.nil?
+    puts (attack_successful ? "#{defender.name} was unable to defend!" : "#{defender.name} defended with #{defending_card}")
+    defender.take([attacking_card]) if attack_successful
+    fill_hands
     attack_successful ? @players.rotate!(2) : @players.rotate!(1)
     remove_cardless_players
-  end
-
-  def attacker_wins?(attacking_card, defending_card)
-    return true if defending_card.nil?
-    if attacking_card.suit == @trump_suit
-      return true unless defending_card.suit == @trump_suit
-    end
-    if defending_card.suit == @trump_suit
-      return false unless attacking_card.suit == @trump_suit
-    end
-    defending_card.int_val < attacking_card.int_val
   end
 
   def remove_cardless_players
@@ -79,9 +63,8 @@ class Game
     @players.each do |player|
       next unless player.cards.count.zero?
       cardless_players << player
-      puts "#{player.name} is cardless!"
     end
-    @players = @players - cardless_players
+    @players -= cardless_players
   end
 
   def attacker
@@ -98,12 +81,7 @@ class Game
 
   def declare_durak
     puts "----------------"
-    if @players.count.zero?
-      puts "There was no дурак this game!"
-    else
-      puts "#{@players.first.name} is the дурак!"
-    end
-    puts "The trump suit was #{@trump_suit}"
+    puts (@players.count.zero? ? "There was no дурак this game!" : "#{@players.first.name} is the дурак!")
     puts "This game took #{@turns} turns"
   end
 end
