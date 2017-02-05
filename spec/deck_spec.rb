@@ -49,12 +49,7 @@ describe Deck do
     expect(deck).to_not respond_to(:cards)
   end
 
-  describe "#take_one" do
-    # Use the front of the cards array as the top
-    it "takes cards off the top of the deck" do
-      expect(deck.take_one).to eq(cards[0])
-    end
-
+  describe "#fill_hand" do
     it "removes cards from deck on take" do
       deck.take_one
       expect(deck.count).to eq(5)

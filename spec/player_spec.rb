@@ -15,10 +15,10 @@ describe Player do
     end
   end
 
-  describe "#deal" do
-    it "fills player's hand with 6 cards from the deck" do
+  describe "#fill_hand" do
+    it "puts cards in the player's hand until they have 6 cards" do
       deck = Deck.new
-      player.deal(deck)
+      player.fill_hand(deck)
       expect(player.cards.count).to eq(6)
     end
   end

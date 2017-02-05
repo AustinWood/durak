@@ -1,13 +1,15 @@
 require_relative 'player'
 require_relative 'deck'
 
+require 'byebug'
+
 class Game
   attr_reader :players, :trump_card
 
   def initialize(players)
     @deck = Deck.new
     @players = players
-    @tump_card = nil
+    @trump_card = nil
   end
 
   def play
@@ -24,6 +26,7 @@ class Game
 
   def set_trump_card
     @trump_card = @deck.take_one
+    puts "The trump card is #{@trump_card}"
   end
 
   # Rotate the @players array so that the Player at i = 0
@@ -48,11 +51,23 @@ class Game
   end
 
   def take_turn
+    gets #
+
     attacking_card = attacker.attack
     defending_card = defender.defend(attacking_card, trump_card)
+
+    puts "\n\n"
+    puts "There are #{players.count} players remaining"
+    puts "#{attacker.name} has #{attacker.cards.count} cards and attacked with #{attacking_card}"
+    puts "#{defender.name} has #{defender.cards.count} cards and defended with #{defending_card}"
+
+
     if attacker_wins?(attacking_card, defending_card)
+      puts "Attacker wins!"
       defender.take([attacking_card, defending_card])
       @players.rotate!
+    else
+      puts "Defender wins!"
     end
     @players.rotate!
     remove_cardless_players
@@ -63,7 +78,7 @@ class Game
       return true unless defending_card.suit == trump_card.suit
     end
     if defending_card.suit == trump_card.suit
-      return true unless attacking_card.suit == trump_card.suit
+      return false unless attacking_card.suit == trump_card.suit
     end
     defending_card.int_val < attacking_card.int_val
   end
@@ -93,10 +108,9 @@ if __FILE__ == $PROGRAM_NAME
   ]
   game = Game.new(players)
   puts "You initialized a new game with the following players:"
-  game.play
   game.players.each do |player|
     puts player.name
     p player.cards
   end
-  game.select_first_attacker
+  game.play
 end

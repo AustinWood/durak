@@ -7,8 +7,10 @@ class Player
     @cards = []
   end
 
-  def deal(deck)
-    6.times { @cards << deck.take_one }
+  def fill_hand(deck)
+    until @cards.count >= 6 || deck.count.zero?
+      @cards << deck.take_one
+    end
   end
 
   def take(cards)
