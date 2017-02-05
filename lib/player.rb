@@ -23,12 +23,20 @@ class Player
   # from these the card with the lowest value.
   # In real-life gameplay, this is usually the best attaking strategy.
   def attack
-
+    selected_card = lowest_card(false)
+    selected_card = lowest_card(true) if selected_card.nil?
+    @cards.delete(selected_card)
+    selected_card
   end
 
   def lowest_card(is_trump, min = nil)
     chosen_card = nil
-    #valid_cards =
+    valid_cards = (is_trump ? trump_cards : non_trump_cards)
+    valid_cards.each do |card|
+      next unless chosen_card.nil? || chosen_card.int_val > card.int_val
+      chosen_card = card
+    end
+    chosen_card
   end
 
   def trump_cards
@@ -36,7 +44,7 @@ class Player
   end
 
   def non_trump_cards
-
+    @cards.reject { |card| card.suit == @trump_suit }
   end
 
   def remember_trump_suit(trump_suit)

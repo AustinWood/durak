@@ -54,26 +54,26 @@ describe Player do
     end
 
     describe "#attack" do
-      # it "returns the lowest card from the players hand" do
-      #   expect(player.attack.value).to eq(:king)
-      # end
-
-      # it "removes the selected card from the player's cards array" do
-      #   player.attack
-      #   expect(player.cards.count).to eq(5)
-      # end
-
       it "chooses the lowest-value card from the player's hand" do
         player.remember_trump_suit(:spades)
         expect(player.attack.value).to eq(:six)
       end
 
-      it "does not choose a trump-card if others are available" do
+      it "does not choose a trump card if others are available" do
         player.remember_trump_suit(:clubs)
         expect(player.attack.value).to eq(:ten)
       end
 
-      it "removes the selected card from the player's cards array"
+      it "chooses a trump card if no others are available" do
+        player.remember_trump_suit(:clubs)
+        player.cards = [Card.new(:clubs, :six), Card.new(:clubs, :nine)]
+        expect(player.attack.value).to eq(:six)
+      end
+
+      it "removes the selected card from the player's cards array" do
+        player.attack
+        expect(player.cards.count).to eq(5)
+      end
     end
 
     describe "#defend" do
