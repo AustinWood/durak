@@ -1,8 +1,6 @@
 require_relative 'player'
 require_relative 'deck'
 
-require 'byebug'
-
 class Game
   attr_reader :players, :trump_card
 
@@ -10,14 +8,15 @@ class Game
     @deck = Deck.new
     @players = players
     @trump_card = nil
+    @turns = 0
   end
 
   def play
     fill_hands
     set_trump_card
     select_first_attacker
-    take_turn until loser?
-    puts "Game over!"
+    take_turn until loser? || @turns >= 100
+    declare_loser
   end
 
   def fill_hands
@@ -51,13 +50,14 @@ class Game
   end
 
   def take_turn
-    gets
+    @turns += 1
+    puts "----------------"
+    players.each { |player| puts player.print_cards }
+    puts "\n"
     attacking_card = attacker.attack
     defending_card = defender.defend(attacking_card, trump_card)
-    puts "\n\n"
-    puts "There are #{players.count} players remaining"
-    puts "#{attacker.name} has #{attacker.cards.count} cards and attacked with #{attacking_card}"
-    puts "#{defender.name} has #{defender.cards.count} cards and defended with #{defending_card}"
+    puts "#{attacker.name} attacked with #{attacking_card}"
+    puts "#{defender.name} defended with #{defending_card}"
     attack_successful = attacker_wins?(attacking_card, defending_card)
     puts (attack_successful ? "Attacker wins!" : "Defender wins!")
     defender.take([attacking_card, defending_card]) if attack_successful
@@ -76,9 +76,14 @@ class Game
   end
 
   def remove_cardless_players
+    cardless_players = []
     @players.each do |player|
-      players.delete(player) if player.cards.count.zero?
+      if player.cards.count.zero?
+        cardless_players << player
+        puts "#{player.name} is cardless!"
+      end
     end
+    @players = @players - cardless_players
   end
 
   def attacker
@@ -89,6 +94,18 @@ class Game
     players[1]
   end
 
+  def declare_loser
+    puts "----------------"
+    if @players.count.zero?
+      puts "There was no дурак this game!"
+    elsif @players.count == 1
+      puts "#{@players.first.name} is the дурак!"
+    else
+      puts "The game exited due to infinite loop caused by randomized cards"
+    end
+    puts "The trump card was #{@trump_card}"
+    puts "This game took #{@turns} turns"
+  end
 end
 
 if __FILE__ == $PROGRAM_NAME
@@ -102,7 +119,6 @@ if __FILE__ == $PROGRAM_NAME
   puts "You initialized a new game with the following players:"
   game.players.each do |player|
     puts player.name
-    p player.cards
   end
   game.play
 end

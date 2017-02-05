@@ -18,16 +18,16 @@ class Player
   end
 
   # To simplify game logic, assume that the attacker
-  # will always choose to attack with their highest value card.
+  # will always choose to attack with their lowest value card.
   def attack
-    highest_card = @cards.first
+    lowest_card = @cards.first
     cards.each do |card|
-      next unless card.int_val > highest_card.int_val
-      highest_card = card
+      next unless card.int_val < lowest_card.int_val
+      lowest_card = card
     end
-    attacking_card = highest_card
-    @cards.delete(attacking_card)
-    attacking_card
+    attacking_card = lowest_card
+    @cards.delete(lowest_card)
+    lowest_card
   end
 
   # TODO: Refactor all defesnse-related methods
@@ -68,5 +68,13 @@ class Player
       end
     end
     defending_card
+  end
+
+  def print_cards
+    card_str = "#{@name}'s cards: "
+    @cards.each do |card|
+      card_str << "#{card}, "
+    end
+    card_str
   end
 end
