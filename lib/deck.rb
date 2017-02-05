@@ -22,4 +22,11 @@ class Deck
     @cards.count
   end
 
+  # Takes `n` cards from the top of the deck.
+  def take(n)
+    raise "not enough cards" if n > count
+    cards_taken = []
+    n.times { cards_taken << @cards.shift }
+    cards_taken
+  end
 end

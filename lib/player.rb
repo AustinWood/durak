@@ -1,11 +1,13 @@
-require_relative 'hand'
-
 class Player
   attr_reader :name
-  attr_accessor :hand
+  attr_accessor :cards
 
   def initialize(name)
     @name = name
-    @hand = Hand.new
+    @cards = []
+  end
+
+  def deal(deck)
+    @cards = deck.take(6)
   end
 end
