@@ -21,6 +21,18 @@ class Card
     :ace   => "A"
   }
 
+  VALUE_INTS = {
+    :six   => 6,
+    :seven => 7,
+    :eight => 8,
+    :nine  => 9,
+    :ten   => 10,
+    :jack  => 11,
+    :queen => 12,
+    :king  => 13,
+    :ace   => 14
+  }
+
   # Returns an array of all suits.
   def self.suits
     SUIT_STRINGS.keys
@@ -38,6 +50,10 @@ class Card
       raise "illegal suit (#{suit}) or value (#{value})"
     end
     @suit, @value = suit, value
+  end
+
+  def int_val
+    VALUE_INTS[self.value]
   end
 
   # Compares two cards to see if they're equal in suit & value.

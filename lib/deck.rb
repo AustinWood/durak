@@ -14,7 +14,7 @@ class Deck
   end
 
   def initialize(cards = Deck.all_cards)
-    @cards = cards
+    @cards = cards.shuffle
   end
 
   # Returns the number of cards in the deck.
@@ -23,10 +23,8 @@ class Deck
   end
 
   # Takes `n` cards from the top of the deck.
-  def take(n)
-    raise "not enough cards" if n > count
-    cards_taken = []
-    n.times { cards_taken << @cards.shift }
-    cards_taken
+  def take_one
+    raise "not enough cards" if count.zero?
+    @cards.shift
   end
 end

@@ -49,21 +49,21 @@ describe Deck do
     expect(deck).to_not respond_to(:cards)
   end
 
-  describe "#take" do
+  describe "#take_one" do
     # Use the front of the cards array as the top
     it "takes cards off the top of the deck" do
-      expect(deck.take(1)).to eq(cards[0..0])
-      expect(deck.take(2)).to eq(cards[1..2])
+      expect(deck.take_one).to eq(cards[0])
     end
 
     it "removes cards from deck on take" do
-      deck.take(2)
-      expect(deck.count).to eq(4)
+      deck.take_one
+      expect(deck.count).to eq(5)
     end
 
     it "doesn't allow you to take more cards than are in the deck" do
-      expect {deck.take(2) }.to_not raise_error
-      expect {deck.take(7) }.to raise_error("not enough cards")
+      expect { deck.take_one }.to_not raise_error
+      5.times { deck.take_one }
+      expect { deck.take_one }.to raise_error("not enough cards")
     end
   end
 end
