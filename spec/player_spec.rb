@@ -37,10 +37,6 @@ describe Player do
     end
   end
 
-  ################################
-  ### TODO: Fix these specs... ###
-  ################################
-
   context "while taking a turn" do
     let(:cards) do
       cards = [
@@ -70,8 +66,8 @@ describe Player do
 
       it "chooses a trump card if no others are available" do
         player.trump_suit = :clubs
-        player.cards = [Card.new(:clubs, :six), Card.new(:clubs, :nine)]
-        expect(player.attack.value).to eq(:six)
+        player.cards = [Card.new(:clubs, :seven), Card.new(:clubs, :nine)]
+        expect(player.attack.value).to eq(:seven)
       end
 
       it "removes the selected card from the player's cards array" do
@@ -115,21 +111,6 @@ describe Player do
         defending_card = player.defend(attacking_card)
         expect(defending_card).to eq(nil)
       end
-
-      # it "returns lowest-value trump-suit card if it wil beat the attacking card" do
-      #   attacking_card = Card.new(:spades, :ace)
-      #   trump_card = Card.new(:clubs, :eight)
-      #   defending_card = player.defend(attacking_card, trump_card)
-      #   expect(defending_card.value).to eq(:six)
-      #   expect(defending_card.suit).to eq(:clubs)
-      # end
-      #
-      # it "removes the selected card from the player's cards array" do
-      #   attacking_card = Card.new(:spades, :ace)
-      #   trump_card = Card.new(:spades, :eight)
-      #   player.defend(attacking_card, trump_card)
-      #   expect(player.cards.count).to eq(5)
-      # end
     end
   end
 end
