@@ -1,5 +1,7 @@
 # Durak
 
+Durak is a card game that is popular in Russia and other post-Soviet states. The word durak (дурак) means *fool* or *idiot*
+
 ## Game Rules
 
 * Start with a shuffled deck of 36 cards.
