@@ -79,10 +79,9 @@ class Game
   def remove_cardless_players
     cardless_players = []
     @players.each do |player|
-      if player.cards.count.zero?
-        cardless_players << player
-        puts "#{player.name} is cardless!"
-      end
+      next unless player.cards.count.zero?
+      cardless_players << player
+      puts "#{player.name} is cardless!"
     end
     @players = @players - cardless_players
   end
@@ -102,6 +101,7 @@ class Game
     elsif @players.count == 1
       puts "#{@players.first.name} is the дурак!"
     else
+      # TODO: Fix this scenario...
       puts "The game exited due to infinite loop caused by randomized cards"
     end
     puts "The trump card was #{@trump_card}"

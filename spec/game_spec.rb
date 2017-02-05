@@ -29,10 +29,8 @@ describe Game do
   end
 
   describe "#set_trump_card" do
-    it "removes top-most card from deck and sets as trump card" do
-      game.set_trump_card
-      expect(game.trump_card).to be_instance_of(Card)
-    end
+    it "sets the trump card"
+    it "informs players of the trump card"
   end
 
   describe "#loser?" do
@@ -63,12 +61,13 @@ describe Game do
   describe "remove_cardless_players" do
     it "removes players from the @players array when they have 0 cards remaining" do
       player_a = Player.new("Pyotr Ilyich Tchaikovsky")
+      player_a.cards = []
       player_b = Player.new("Yuri Gagarin")
       player_b.cards = [Card.new(:hearts, :queen)]
       players = [player_a, player_b]
       game = Game.new(players)
       game.remove_cardless_players
-      expect(players.count).to eq(1)
+      expect(game.players.count).to eq(1)
     end
   end
 
