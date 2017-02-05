@@ -20,3 +20,6 @@ Deck
 Hand
 Player
 Game
+
+
+The dealer asks the person to his left to cut the deck. Optional: If this is not the first game of the evening, the player may opt not to cut the deck by saying "Nye snimayu shapkee Doo-rah-kam" ("I do not tip my hat to idiots"). The dealer must go around the table asking for people to cut the deck. If all refuse, the dealer cuts the deck.

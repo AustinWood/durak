@@ -22,6 +22,10 @@ class Deck
     @cards.count
   end
 
+  def reveal_trump_suit
+    @cards.last.suit
+  end
+
   # Takes `n` cards from the top of the deck.
   def take_one
     raise "not enough cards" if count.zero?

@@ -7,7 +7,7 @@ class Game
   def initialize(players)
     @deck = Deck.new
     @players = players
-    @trump_card = nil
+    @trump_suit = nil
     @turns = 0
   end
 
@@ -24,8 +24,9 @@ class Game
   end
 
   def set_trump_card
-    @trump_card = @deck.take_one
-    puts "The trump card is #{@trump_card}"
+    @trump_suit = @deck.reveal_trump_suit
+    players.each { |player| player.remember_trump_suit(@trump_suit) }
+    puts "The trump suit is #{@trump_suit}"
   end
 
   # Rotate the @players array so that the Player at i = 0
