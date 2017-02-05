@@ -13,15 +13,15 @@ class Game
   end
 
   def play
-    deal_cards
+    fill_hands
     set_trump_card
     select_first_attacker
     take_turn until loser?
     puts "Game over!"
   end
 
-  def deal_cards
-    players.each { |player| player.deal(@deck) }
+  def fill_hands
+    players.each { |player| player.fill_hand(@deck) }
   end
 
   def set_trump_card
@@ -51,25 +51,17 @@ class Game
   end
 
   def take_turn
-    gets #
-
+    gets
     attacking_card = attacker.attack
     defending_card = defender.defend(attacking_card, trump_card)
-
     puts "\n\n"
     puts "There are #{players.count} players remaining"
     puts "#{attacker.name} has #{attacker.cards.count} cards and attacked with #{attacking_card}"
     puts "#{defender.name} has #{defender.cards.count} cards and defended with #{defending_card}"
-
-
-    if attacker_wins?(attacking_card, defending_card)
-      puts "Attacker wins!"
-      defender.take([attacking_card, defending_card])
-      @players.rotate!
-    else
-      puts "Defender wins!"
-    end
-    @players.rotate!
+    attack_successful = attacker_wins?(attacking_card, defending_card)
+    puts (attack_successful ? "Attacker wins!" : "Defender wins!")
+    defender.take([attacking_card, defending_card]) if attack_successful
+    attack_successful ? @players.rotate!(2) : @players.rotate!(1)
     remove_cardless_players
   end
 

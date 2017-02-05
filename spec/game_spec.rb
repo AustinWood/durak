@@ -19,12 +19,12 @@ describe Game do
     end
   end
 
-  describe "#deal_cards" do
-    it "deals starting hand to each player" do
+  describe "#fill_hands" do
+    it "fills each player's hand to 6 cards, if the deck allows" do
       players.each do |player|
-        expect(player).to receive(:deal)
+        expect(player).to receive(:fill_hand)
       end
-      game.deal_cards
+      game.fill_hands
     end
   end
 
