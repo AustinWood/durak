@@ -36,7 +36,7 @@ class Game
     first_attacker_idx = 0
     players.each.with_index do |player, i|
       player.cards.each do |card|
-        next unless card.suit == trump_card.suit
+        next unless card.suit == @trump_suit
         if lowest_card_val.nil? || card.int_val < lowest_card_val
           lowest_card_val = card.int_val
           first_attacker_idx = i
@@ -56,22 +56,27 @@ class Game
     players.each { |player| puts player.print_cards }
     puts "\n"
     attacking_card = attacker.attack
-    defending_card = defender.defend(attacking_card, trump_card)
+    defending_card = defender.defend(attacking_card)
     puts "#{attacker.name} attacked with #{attacking_card}"
     puts "#{defender.name} defended with #{defending_card}"
     attack_successful = attacker_wins?(attacking_card, defending_card)
     puts (attack_successful ? "Attacker wins!" : "Defender wins!")
-    defender.take([attacking_card, defending_card]) if attack_successful
+    if defending_card.nil?
+      defender.take([attacking_card])
+    else
+      defender.take([attacking_card, defending_card]) if attack_successful
+    end
     attack_successful ? @players.rotate!(2) : @players.rotate!(1)
     remove_cardless_players
   end
 
   def attacker_wins?(attacking_card, defending_card)
-    if attacking_card.suit == trump_card.suit
-      return true unless defending_card.suit == trump_card.suit
+    return true if defending_card.nil?
+    if attacking_card.suit == @trump_suit
+      return true unless defending_card.suit == @trump_suit
     end
-    if defending_card.suit == trump_card.suit
-      return false unless attacking_card.suit == trump_card.suit
+    if defending_card.suit == @trump_suit
+      return false unless attacking_card.suit == @trump_suit
     end
     defending_card.int_val < attacking_card.int_val
   end
@@ -98,13 +103,10 @@ class Game
     puts "----------------"
     if @players.count.zero?
       puts "There was no дурак this game!"
-    elsif @players.count == 1
-      puts "#{@players.first.name} is the дурак!"
     else
-      # TODO: Fix this scenario...
-      puts "The game exited due to infinite loop caused by randomized cards"
+      puts "#{@players.first.name} is the дурак!"
     end
-    puts "The trump card was #{@trump_card}"
+    puts "The trump suit was #{@trump_suit}"
     puts "This game took #{@turns} turns"
   end
 end
