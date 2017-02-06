@@ -1,12 +1,12 @@
 # Durak
 
-Durak is a card game that is popular in Russia and other post-Soviet states. The word durak (дурак) means *fool* or *idiot*
+Durak is a card game that is popular in Russia and other post-Soviet states. The word durak (дурак) means *fool* or *idiot*.
 
 ## Game Rules
 
 * Start with a shuffled deck of 36 cards.
 * Play with 2-5 players.
-* The goal is not get rid of all your cards. The last player with cards is the 'durak' (fool).
+* The goal is to get rid of all your cards. The last player with cards is the 'durak' (fool).
 * Each player is dealt six cards. The remaining cards are placed in the center and form the 'talon'.
 * The bottom-most card in the talon determines the trump suit.
 * Ace is the highest rank and six is the lowest. Trumps always beat non-trump cards regardless of rank (e.g., a trump six beats a non-trump ace).
