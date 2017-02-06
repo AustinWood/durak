@@ -23,7 +23,7 @@ describe Player do
     end
 
     it "does nothing if the deck is empty" do
-      deck = []
+      deck = Deck.new([])
       player.fill_hand(deck)
       expect(player.cards.count).to eq(0)
     end
